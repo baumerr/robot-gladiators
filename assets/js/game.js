@@ -4,28 +4,44 @@ window.alert("Welcome to Robot Gladiators!");
 //  * Defeat each enemy-robot
 // "LOSE" - Play robot's health is zero or less
 
+var fightOrSkip = function () {
+    // ask player if they'd like to right or run
+    var promptFight = window.prompt("Would you like to FIGHT or SKIP this battle? Enter 'FIGHT' or 'SKIP' to choose.");
+    console.log (promptFight);
+
+    if (!promptFight) {
+        window.alert("You need to provide an answer! Please try again.");
+        return fightOrSkip();
+    } else {
+        promptFight = promptFight.toLowerCase();
+    }
+
+    //if player chooses to skip
+    if (promptFight === "skip") {
+        //confirm player wants to skip
+         var confirmSkip = window.confirm("Are you sure you'd like to quit?");
+
+        // if yes (true), leave fight
+         if (confirmSkip) {
+             window.alert(playerInfo.name + " has decided to skip this fight. Goodbye!");
+             // subtract money from playerInfo.money for skipping
+                playerInfo.money = Math.max(0, playerInfo.money - 10);
+                console.log("playerInfo.money", playerInfo.money);
+                return true;
+            }
+    }
+    return false;
+}
+
 // creates function called "fight"
 var fight = function (enemy) {
     
     // repeat and execute as long as the enemy-robot is alive
     while(playerInfo.health > 0 && enemy.health > 0) {
-        // ask player if they'd like to right or run
-        var promptFight = window.prompt("Would you like to FIGHT or SKIP this battle? Enter 'FIGHT' or 'SKIP' to choose.");
-        console.log (promptFight);
-
-        //if player chooses to skip
-        if (promptFight === "skip" || promptFight === "SKIP") {
-            //confirm player wants to skip
-             var confirmSkip = window.confirm("Are you sure you'd like to quit?");
-    
-            // if yes (true), leave fight
-             if (confirmSkip) {
-                 window.alert(playerInfo.name + " has decided to skip this fight. Goodbye!");
-                 // subtract money from playerInfo.money for skipping
-                    playerInfo.money = Math.max(0, playerInfo.money - 10);
-                    console.log("playerInfo.money", playerInfo.money);
-                    break;
-                }
+        //ask player if they'd like to skip using the fightOrSkip function
+        if (fightOrSkip()) {
+            // if true, leave fight by breaking loop
+            break;
         }
         
         // Subtract the value of 'playerInfo.attack' from the value of 'enemy.health' and use that result to update the value in the 'enemy.health' variable
